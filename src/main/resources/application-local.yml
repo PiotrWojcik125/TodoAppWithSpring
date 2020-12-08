@@ -1,0 +1,14 @@
+spring:
+  h2.console:
+   enabled: true
+   path: '/console'
+  datasource:
+    url: 'jdbc:h2:file:E:/TodoApp/TodoApp/todo-db'
+  jpa:
+    hibernate:
+      ddl-auto: validate
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
