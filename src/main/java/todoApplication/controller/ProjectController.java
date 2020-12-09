@@ -1,5 +1,6 @@
 package todoApplication.controller;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,7 @@ public class ProjectController {
         model.addAttribute("message","Dodano projekt!");
         return "projects";
     }
+    @Timed(value="project.create.group",histogram = true,percentiles = {0.5,0.95,0.99})
     @PostMapping("/{id}")
     String createGroup(
             @ModelAttribute("project") ProjectWriteModel current,
