@@ -26,7 +26,7 @@ public class GroupTaskWriteModel {
         return deadline;
     }
 
-    public void setDeadLine(final LocalDateTime deadline) {
+    public void setDeadline(final LocalDateTime deadline) {
         this.deadline = deadline;
     }
 

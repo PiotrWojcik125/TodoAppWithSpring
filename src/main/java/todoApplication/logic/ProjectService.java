@@ -48,7 +48,7 @@ public class ProjectService {
                                     .map(projectStep -> {
                                             var task = new GroupTaskWriteModel();
                                             task.setDescription(project.getDescription());
-                                            task.setDeadLine(deadline.plusDays(projectStep.getDaysToDeadline()));
+                                            task.setDeadline(deadline.plusDays(projectStep.getDaysToDeadline()));
                                             return task;
                                     })
                                     .collect(Collectors.toList())
