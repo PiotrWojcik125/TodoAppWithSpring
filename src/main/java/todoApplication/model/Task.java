@@ -2,6 +2,7 @@ package todoApplication.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
+import todoApplication.model.event.TaskEvent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -27,7 +28,7 @@ public class Task {
      */
     @SuppressWarnings("unused")
 
-    Task(){}
+    public Task(){}
     public Task(String description, LocalDateTime deadline){
         this(description,deadline,null);
     }
@@ -58,8 +59,9 @@ public class Task {
         return done;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
+    public TaskEvent toogle() {
+        this.done = !this.done;
+        return TaskEvent.changed(this);
     }
 
     public LocalDateTime getDeadline() {

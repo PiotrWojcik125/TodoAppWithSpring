@@ -1,5 +1,6 @@
 package todoApplication.controller;
 
+import org.springframework.context.ApplicationEventPublisher;
 import todoApplication.logic.TaskService;
 import todoApplication.model.Task;
 import todoApplication.model.TaskRepository;
@@ -21,6 +22,7 @@ class TaskController {
 
     private final TaskRepository repository;
     private final TaskService service;
+    private final ApplicationEventPublisher eventPublisher;
     private static final LocalDateTime today = LocalDateTime.of(
             LocalDateTime.now().getYear(),
             LocalDateTime.now().getMonth(),
@@ -30,9 +32,10 @@ class TaskController {
             59
             );
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
-    TaskController(final TaskRepository repository, final TaskService service){
+    TaskController(final TaskRepository repository, final TaskService service,ApplicationEventPublisher eventPublisher){
         this.repository=repository;
         this.service = service;
+        this.eventPublisher=eventPublisher;
     }
     @GetMapping(params={"!sort","!page","!size"})
     CompletableFuture<ResponseEntity<List<Task>>>readAllTasks(){
@@ -83,10 +86,9 @@ class TaskController {
         if(!repository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
-        repository.findById(id).ifPresent(task->task.setDone(!task.isDone()));
+        repository.findById(id)
+                .map(Task::toogle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
-   /** public void foobar(){
-    *   this.toogleTask(1);
-    **/
 }

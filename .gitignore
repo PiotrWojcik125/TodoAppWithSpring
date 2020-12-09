@@ -33,7 +33,6 @@ build/
 .vscode/
 
 ### Database ###
-*.sql
 *.db
 
 ### Maven ###

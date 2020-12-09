@@ -13,6 +13,10 @@ interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<Task
     @Override
     @Query("select distinct g from TaskGroup g join fetch g.tasks")
     List<TaskGroup> findAll();
+
     @Override
     boolean existsByDoneIsFalseAndProject_Id(Integer projectId);
+
+    @Override
+    boolean existsByDescription(String description);
 }
