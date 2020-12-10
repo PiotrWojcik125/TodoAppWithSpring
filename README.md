@@ -1,4 +1,4 @@
-This project was made (its not final verion yet) during course "Java - Spring Framework" for full information go to : https://full-stack.engineering/
+This project was made (its not final version yet) during course "Java - Spring Framework" for full information go to : https://full-stack.engineering/
 
 Main goal of this project was to learn Spring framework.
 
