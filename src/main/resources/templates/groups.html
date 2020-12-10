@@ -54,17 +54,17 @@
 
     </dl>
     <fieldset>
-        <legend>Nowa grupa </legend>
+        <legend>New group </legend>
         <!--/*@thymesVar id="group" type="todoApplication.model.projection.GroupWriteModel"*/-->
     <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
         <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" class="C(red)"></p>
 
-        <label>Opis
+        <label>Description
             <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'"/>
         </label>
         <fieldset th:each="task,taskStat:*{tasks}">
-            <legend th:text="|Zadanie ${taskStat.index+1}|"></legend>
-            <label>Opis
+            <legend th:text="|Task ${taskStat.index+1}|"></legend>
+            <label>Description
                 <input type="text" th:field="*{tasks[__${taskStat.index}__].description}" th:errorclass="'Bdc(red)'"/>
             </label>
             <label>Deadline
@@ -76,8 +76,8 @@
             <button type="submit" name="addTask">+</button>
         </div>
         <p>
-            <button type="submit">Dodaj</button>
-            <button type="reset">Wyczyść</button>
+            <button type="submit">Add</button>
+            <button type="reset">Clear</button>
         </p>
     </form>
     </fieldset>
