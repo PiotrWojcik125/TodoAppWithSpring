@@ -6,12 +6,12 @@ import java.time.Clock;
 import java.time.Instant;
 
 public abstract class TaskEvent {
+    private final int taskId;
+    private final Instant occurrence;
 
     public static TaskEvent changed(Task source){
         return source.isDone() ? new TaskDone(source) : new TaskUndone(source);
     }
-    private int taskId;
-    private Instant occurrence;
 
     TaskEvent(final int taskId, Clock clock){
         this.taskId=taskId;

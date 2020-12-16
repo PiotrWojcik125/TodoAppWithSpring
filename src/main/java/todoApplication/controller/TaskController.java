@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
+@IllegalExceptionProcessing
 @RequestMapping("/tasks")
 class TaskController {
 

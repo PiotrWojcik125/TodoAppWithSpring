@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
-@Service
+
 public class TaskService {
     private static final Logger logger= LoggerFactory.getLogger(TaskService.class);
     private final TaskRepository repository;

@@ -10,22 +10,22 @@ import todoApplication.model.event.TaskEvent;
 import todoApplication.model.event.TaskUndone;
 
 @Service
-class ChangedTaskeventListener {
-    private static final Logger logger= LoggerFactory.getLogger(ChangedTaskeventListener.class);
+class ChangedTaskEventListener {
+    private static final Logger logger= LoggerFactory.getLogger(ChangedTaskEventListener.class);
 
     private final PersistedTaskEventRepository repository;
 
-    ChangedTaskeventListener(PersistedTaskEventRepository repository){
+    ChangedTaskEventListener(PersistedTaskEventRepository repository){
         this.repository=repository;
     }
     @Async
     @EventListener
-    public void on(TaskDone event){
+    public void off(TaskDone event){
         onChanged(event);
     }
     @Async
     @EventListener
-    public void off(TaskUndone event){
+    public void on(TaskUndone event){
         onChanged(event);
     }
     private void onChanged(final TaskEvent event){

@@ -22,9 +22,7 @@ public class LogicAspect {
     }
     @Pointcut("execution(* todoApplication.logic.ProjectService.createGroup(..))")
     void projectServiceCreateGroup(){
-
     }
-
     @Before("projectServiceCreateGroup()")
     static void logMethodCall(JoinPoint jp){
        logger.info("Before {} with {}",jp.getSignature().getName(), jp.getArgs());
