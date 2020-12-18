@@ -1,6 +1,7 @@
 package todoApplication.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Controller
 @IllegalExceptionProcessing
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 @RequestMapping("/groups")
 public class TaskGroupController {
     private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);

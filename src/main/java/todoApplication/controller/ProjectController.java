@@ -19,6 +19,7 @@ import java.util.List;
 
 @Controller
 @IllegalExceptionProcessing
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 @RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService service;
@@ -26,12 +27,9 @@ public class ProjectController {
         this.service=service;
     }
     @GetMapping
-    String showProjects(Model model, Authentication auth){
-   //     if(auth.getAuthorities().stream().anyMatch(a->a.getAuthority().equals("ROLE_ADMIN"))) {
+    String showProjects(Model model){
             model.addAttribute("project", new ProjectWriteModel());
             return "projects";
-   //     }
-  //      return "index";
     }
     @PostMapping(params = "addStep")
     String addProjectStep(@ModelAttribute("project") ProjectWriteModel current){
@@ -50,7 +48,7 @@ public class ProjectController {
         service.save(current);
         model.addAttribute("project",new ProjectWriteModel());
         model.addAttribute("projects",getProjects());
-        model.addAttribute("message","Dodano projekt!");
+        model.addAttribute("message","Project added!");
         return "projects";
     }
     @Timed(value="project.create.group",histogram = true,percentiles = {0.5,0.95,0.99})
@@ -63,9 +61,9 @@ public class ProjectController {
     ){
         try {
             service.createGroup(deadline,id);
-            model.addAttribute("message","Dodano grupę!");
+            model.addAttribute("message","Group added!");
         } catch (IllegalStateException | IllegalArgumentException e){
-            model.addAttribute("message","Błąd podczas tworzenia grupy!");
+            model.addAttribute("message","Error occurred, group was not created!");
         }
         return "projects";
     }
