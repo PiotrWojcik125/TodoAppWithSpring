@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_parameter_name" th:content="${_csrf.headerName}"/>
     <title>Todo App: groups</title>
     <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
 </head>
@@ -23,6 +25,15 @@
 <script>
     (async function() {
         const main = document.querySelector('main');
+        var tokenName;
+        var token;
+        var metas = document.getElementsByTagName('meta');
+        for(let i=0;i<metas.length;i++){
+            if (metas[i].getAttribute('name')=='_csrf')
+                tokenName=metas[i].getAttribute('content')
+            if (metas[i].getAttribute('name')=='_csrf_parameter_name')
+                token=metas[i].getAttribute('content')
+        }
         const params = new URLSearchParams(location.search);
         const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/tasks');
         if (response.ok) {
@@ -38,7 +49,8 @@
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    [token]:tokenName
                 },
                 body: JSON.stringify({
                     description: form.elements.description.value,
@@ -62,7 +74,7 @@
                 </label>
             `;
             result.querySelector('input').addEventListener('click', async (e) => {
-                const response = await fetch(`/tasks/${id}`, { method: 'PATCH' });
+                const response = await fetch(`/tasks/${id}`, { method: 'PATCH',headers:{[token]:tokenName }});
                 if (!response.ok) {
                     e.target.checked = !e.target.checked;
                 }

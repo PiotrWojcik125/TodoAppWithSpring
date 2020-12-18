@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 @IllegalExceptionProcessing
 @RequestMapping("/projects")
 public class ProjectController {
