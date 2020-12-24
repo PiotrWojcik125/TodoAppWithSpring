@@ -59,7 +59,7 @@ class TaskController {
         return ResponseEntity.ok(repository.findByDone(state));
     }
     @GetMapping("/today")
-    ResponseEntity<List<Task>> findAllwithNullDeadline() {
+    ResponseEntity<List<Task>> findTasksForToday() {
         List<Task> result = repository.findAllByDoneIsFalseAndDeadlineIsNull();
         result.addAll(repository.findAllByDoneIsFalseAndDeadlineIsLessThanEqual(today));
         return ResponseEntity.ok().body(result);

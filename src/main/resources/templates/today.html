@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_parameter_name" th:content="${_csrf.headerName}"/>
+    <title>Tasks for today</title>
+    <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
+</head>
+<body>
+<main>
+</main>
+<script>
+    (async function() {
+        const main = document.querySelector('main');
+        var tokenName;
+        var token;
+        var metas = document.getElementsByTagName('meta');
+        for(let i=0;i<metas.length;i++){
+            if (metas[i].getAttribute('name')=='_csrf')
+                tokenName=metas[i].getAttribute('content')
+            if (metas[i].getAttribute('name')=='_csrf_parameter_name')
+                token=metas[i].getAttribute('content')
+        }
+        const response =await fetch('/tasks/today');
+        if (response.ok) {
+            const tasks = await response.json();
+            const list = document.createElement('ul');
+            tasks.forEach(task => list.appendChild(createTask(task)));
+            main.prepend(list);
+        }
+        function createTask({ id, description, deadline, done }) {
+            const result = document.createElement('li');
+            result.innerHTML = `
+                <label>
+                    <input type="checkbox" ${done ? ' checked' : ''}/>
+                    ${description}
+                    <small>${deadline && deadline.replace('T', ' ')}</small>
+                </label>
+            `;
+            result.querySelector('input').addEventListener('click', async (e) => {
+                const response = await fetch(`/tasks/${id}`, { method: 'PATCH',headers:{[token]:tokenName }});
+                if (!response.ok) {
+                    e.target.checked = !e.target.checked;
+                }
+            });
+            return result;
+        }
+    })();
+</script>
+</body>
+</html>
