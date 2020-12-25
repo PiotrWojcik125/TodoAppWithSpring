@@ -81,6 +81,11 @@ class TaskController {
         Task createdTask = repository.save(toCreate);
         return ResponseEntity.created(URI.create("/"+createdTask.getId())).body(createdTask);
     }
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deleteTask(@PathVariable int id){
+        repository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<?> toogleTask(@PathVariable int id){

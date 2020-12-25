@@ -17,6 +17,8 @@ public interface TaskRepository {
 
     Task save(Task entity);
 
+    void deleteById(Integer id);
+
     Page<Task> findAll(Pageable page);
 
     boolean existsById(Integer id);
@@ -30,5 +32,7 @@ public interface TaskRepository {
     List<Task> findAllByDoneIsFalseAndDeadlineIsNull();
 
     List<Task> findAllByDoneIsFalseAndDeadlineIsLessThanEqual(final LocalDateTime today);
+
+
 
 }

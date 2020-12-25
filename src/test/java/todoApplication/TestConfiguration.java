@@ -82,6 +82,9 @@ public class TestConfiguration {
                 public List<Task> findAllByDoneIsFalseAndDeadlineIsLessThanEqual(final LocalDateTime today){
                     return List.of();
                 }
+                @Override
+                public void deleteById(final Integer id) {
+            }
         };
     }
 

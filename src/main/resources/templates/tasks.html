@@ -71,6 +71,7 @@
                     <input type="checkbox" ${done ? ' checked' : ''}/>
                     ${description}
                     <small>${deadline && deadline.replace('T', ' ')}</small>
+                    <button>Delete</button>
                 </label>
             `;
             result.querySelector('input').addEventListener('click', async (e) => {
@@ -79,6 +80,10 @@
                     e.target.checked = !e.target.checked;
                 }
             });
+            result.querySelector('button').addEventListener('click', async (e) => {
+                const response = await fetch(`/tasks/${id}`, { method: 'DELETE',headers:{[token]:tokenName }});
+                    location.reload();
+            })
             return result;
         }
     })();
