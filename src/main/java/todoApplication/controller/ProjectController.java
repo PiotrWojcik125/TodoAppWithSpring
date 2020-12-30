@@ -2,13 +2,16 @@ package todoApplication.controller;
 
 import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import todoApplication.logic.ProjectService;
 import todoApplication.model.Project;
+import todoApplication.model.ProjectRepository;
 import todoApplication.model.ProjectStep;
+import todoApplication.model.Task;
 import todoApplication.model.projection.ProjectWriteModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +26,10 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService service;
-    ProjectController(final ProjectService service){
+    private final ProjectRepository repository;
+    ProjectController(final ProjectService service,ProjectRepository repository){
         this.service=service;
+        this.repository=repository;
     }
     @GetMapping
     String showProjects(Model model){
@@ -72,4 +77,11 @@ public class ProjectController {
         return service.findAll();
     }
 
+    @PostMapping(value = "/{id}", params = "deleteProject")
+    String deleteTask(@PathVariable int id,Model model){
+        repository.deleteById(id);
+        model.addAttribute("project",new ProjectWriteModel());
+        model.addAttribute("projects",getProjects());
+        return "projects";
+    }
 }
