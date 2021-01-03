@@ -32,7 +32,7 @@
     <!--/*@thymesVar id="message" type="java.lang.String"*/-->
     <h1 th:if="${message !=null}" th:text="${message}"></h1>
     <!--/*@thymesVar id="groups" type="java.util.List<todoApplication.model.projection.GroupReadModel>"*/-->
-    <dl th:each="group: ${groups} "class="Bd P(10)">
+    <dl th:each="group: ${groups} " class="Bd P(10)">
         <dt>
             <label>
                 <input type="checkbox"/>
@@ -51,7 +51,9 @@
                 </ul>
             </a>
         </dd>
-
+        <form action="#" th:action="@{/groups/{groupId}(groupId=${group.id})}" method="post">
+            <button type="submit" name="deleteGroup">Delete</button>
+        </form>
     </dl>
     <fieldset>
         <legend>New group </legend>

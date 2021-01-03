@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import todoApplication.model.ProjectStep;
 import todoApplication.model.Task;
+import todoApplication.model.TaskGroupRepository;
 import todoApplication.model.projection.GroupReadModel;
 import todoApplication.model.projection.GroupTaskWriteModel;
 import todoApplication.model.projection.GroupWriteModel;
@@ -34,9 +35,11 @@ public class TaskGroupController {
     private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
     private final TaskGroupService service;
     private final TaskRepository repository;
-    TaskGroupController(final TaskGroupService service, final TaskRepository repository){
+    private final TaskGroupRepository groupRepository;
+    TaskGroupController(final TaskGroupService service, final TaskRepository repository, final TaskGroupRepository groupRepository){
         this.service=service;
         this.repository=repository;
+        this.groupRepository=groupRepository;
     }
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     String showGroups(Model model){
@@ -81,6 +84,14 @@ public class TaskGroupController {
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel toCreate){
         GroupReadModel result = service.createGroup(toCreate);
         return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
+    }
+    @PostMapping(value = "/{id}", params = "deleteGroup")
+    String deleteGroup(@PathVariable int id,Model model)
+    {
+        model.addAttribute("group",new GroupWriteModel());
+        groupRepository.deleteById(id);
+        model.addAttribute("groups",getGroups());
+        return "groups";
     }
     @ModelAttribute("groups")
     public List<GroupReadModel> getGroups() {

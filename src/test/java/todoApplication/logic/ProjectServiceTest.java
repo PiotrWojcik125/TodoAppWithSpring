@@ -163,7 +163,11 @@ class ProjectServiceTest {
                    return entity;
                }
 
-               @Override
+       @Override
+       public void deleteById(final int id) {
+
+       }
+       @Override
                public boolean existsByDoneIsFalseAndProject_Id(final Integer projectId) {
                    return map.values().stream().filter(group->!group.isDone())
                            .anyMatch(group->group.getProject()!= null && group.getProject().getId()==projectId);

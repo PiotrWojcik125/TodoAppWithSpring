@@ -14,4 +14,6 @@ public interface TaskGroupRepository {
 
     boolean existsByDescription(String description);
 
+    void deleteById(int id);
+
 }

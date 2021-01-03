@@ -50,6 +50,7 @@
         <legend>New project</legend>
     <!--/*@thymesVar id="project" type="todoApplication.model.projection.ProjectWriteModel"*/-->
     <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
+        <p th:if="${#fields.hasAnyErrors()}" th:errors="*{all}" class="C(red)"></p>
         <label>Description
             <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'"/>
         </label>
