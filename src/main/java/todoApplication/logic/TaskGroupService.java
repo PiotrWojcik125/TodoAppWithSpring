@@ -1,10 +1,7 @@
 package todoApplication.logic;
-import todoApplication.model.Project;
-import todoApplication.model.TaskGroup;
-import todoApplication.model.TaskRepository;
+import todoApplication.model.*;
 import todoApplication.model.projection.GroupReadModel;
 import todoApplication.model.projection.GroupWriteModel;
-import todoApplication.model.TaskGroupRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +36,9 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
-
+    public Task addTaskToGroup(Task toAdd,Integer id){
+        TaskGroup group =repository.findById(id).orElseThrow(()->new IllegalArgumentException(("TaskGroup with given id not found")));
+        return taskRepository.save(new Task(toAdd.getDescription(), toAdd.getDeadline(),group));
+    }
 
 }

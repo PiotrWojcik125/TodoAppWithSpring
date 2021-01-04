@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import todoApplication.model.Task;
+import todoApplication.model.TaskGroup;
 import todoApplication.model.TaskGroupRepository;
 import todoApplication.model.projection.GroupReadModel;
 import todoApplication.model.projection.TaskWriteModel;
@@ -67,7 +68,6 @@ public class TaskGroupController {
         model.addAttribute("message","Group added!");
         return "groups";
     }
-
     @ResponseBody
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Task>> readAllTasksFromGroup(@PathVariable int id){
@@ -85,6 +85,12 @@ public class TaskGroupController {
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel toCreate){
         GroupReadModel result = service.createGroup(toCreate);
         return ResponseEntity.created(URI.create("/"+result.getId())).body(result);
+    }
+    @ResponseBody
+    @PostMapping("/{id}")
+    ResponseEntity<Task> addTaskToGroup(@RequestBody @Valid Task toCreate,@PathVariable Integer id){
+        Task createdTask = service.addTaskToGroup(toCreate, id);
+        return ResponseEntity.created(URI.create("/" + createdTask.getId())).body(createdTask);
     }
     @PostMapping(value = "/{id}", params = "deleteGroup")
     String deleteGroup(@PathVariable int id,Model model)

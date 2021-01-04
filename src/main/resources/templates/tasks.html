@@ -45,7 +45,18 @@
         const form = document.querySelector('form');
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const resp = await fetch('/tasks', {
+            const resp = params.has('group') ? await fetch(`/groups/${params.get('group')}`, {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    [token]:tokenName
+                },
+                body: JSON.stringify({
+                    description: form.elements.description.value,
+                    deadline: form.elements.deadline.value && form.elements.deadline.value + ':00.000'
+                })
+            }) : await fetch(`/tasks`, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
@@ -80,7 +91,7 @@
                     e.target.checked = !e.target.checked;
                 }
             });
-            result.querySelector('button').addEventListener('click', async (e) => {
+            result.querySelector('button').addEventListener('click', async () => {
                 const response = await fetch(`/tasks/${id}`, { method: 'DELETE',headers:{[token]:tokenName }});
                     location.reload();
             })
