@@ -3,7 +3,7 @@ import todoApplication.model.Project;
 import todoApplication.model.ProjectRepository;
 import todoApplication.model.TaskGroupRepository;
 import todoApplication.model.projection.GroupReadModel;
-import todoApplication.model.projection.GroupTaskWriteModel;
+import todoApplication.model.projection.TaskWriteModel;
 import todoApplication.model.projection.GroupWriteModel;
 import todoApplication.model.projection.ProjectWriteModel;
 import todoApplication.TaskConfigurationProperties;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 
 public class ProjectService {
-    private ProjectRepository repository;
-    private TaskConfigurationProperties config;
-    private TaskGroupRepository taskGroupRepository;
-    private TaskGroupService taskGroupService;
+    private final ProjectRepository repository;
+    private final TaskConfigurationProperties config;
+    private final TaskGroupRepository taskGroupRepository;
+    private final TaskGroupService taskGroupService;
 
     public ProjectService(ProjectRepository repository, TaskGroupRepository groupRepository, TaskGroupService taskGroupService, TaskConfigurationProperties config) {
         this.repository = repository;
@@ -46,7 +46,7 @@ public class ProjectService {
                     targetGroup.setTasks(
                             project.getSteps().stream()
                                     .map(projectStep -> {
-                                            var task = new GroupTaskWriteModel();
+                                            var task = new TaskWriteModel();
                                             task.setDescription(project.getDescription());
                                             task.setDeadline(deadline.plusDays(projectStep.getDaysToDeadline()));
                                             return task;

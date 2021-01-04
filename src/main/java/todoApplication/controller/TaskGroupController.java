@@ -5,11 +5,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import todoApplication.model.ProjectStep;
 import todoApplication.model.Task;
 import todoApplication.model.TaskGroupRepository;
 import todoApplication.model.projection.GroupReadModel;
-import todoApplication.model.projection.GroupTaskWriteModel;
+import todoApplication.model.projection.TaskWriteModel;
 import todoApplication.model.projection.GroupWriteModel;
 import todoApplication.logic.TaskGroupService;
 import todoApplication.model.TaskRepository;
@@ -19,12 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.print.attribute.standard.Media;
-import javax.swing.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -48,7 +44,12 @@ public class TaskGroupController {
     }
     @PostMapping(params = "addTask",produces = MediaType.TEXT_HTML_VALUE)
     String addGroupTask(@ModelAttribute("group") GroupWriteModel current){
-        current.getTasks().add(new GroupTaskWriteModel());
+        current.getTasks().add(new TaskWriteModel());
+        return "groups";
+    }
+    @PostMapping(params = "deleteTask",produces = MediaType.TEXT_HTML_VALUE,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    String deleteGroupTask(@ModelAttribute("group") GroupWriteModel current,@RequestParam("deleteTask")int id){
+        current.getTasks().remove(id);
         return "groups";
     }
     @PostMapping(produces = MediaType.TEXT_HTML_VALUE,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -63,7 +64,7 @@ public class TaskGroupController {
         service.createGroup(current);
         model.addAttribute("group",new GroupWriteModel());
         model.addAttribute("groups",getGroups());
-        model.addAttribute("message","Dodano grupę!");
+        model.addAttribute("message","Group added!");
         return "groups";
     }
 

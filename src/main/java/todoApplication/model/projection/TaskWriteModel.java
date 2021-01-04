@@ -8,9 +8,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-public class GroupTaskWriteModel {
+public class TaskWriteModel {
     @NotBlank(message = "Task group's description mus not be empty")
     private String description;
+    @NotNull(message = "Deadline must not be null")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
 

@@ -19,7 +19,7 @@ public class ProjectStep {
     public Integer getId(){
         return id;
     }
-    public void setIdId(){
+    void setIdId(Integer id){
         this.id=id;
     }
     public String getDescription(){

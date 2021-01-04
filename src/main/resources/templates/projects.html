@@ -62,6 +62,7 @@
             <label>Days to deadline
             <input type="number" th:field="*{steps[__${stepStat.index}__].daysToDeadline}" th:errorclass="'Bdc(red)'"/>
             </label>
+                <button type="submit"  th:if="${stepStat.index}!=0" name="deleteStep" th:value="${stepStat.index}">-</button>
         </fieldset>
         <div>
             <button type="submit" name="addStep">+</button>

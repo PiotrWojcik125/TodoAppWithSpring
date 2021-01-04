@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class ProjectController {
     @PostMapping(params = "addStep")
     String addProjectStep(@ModelAttribute("project") ProjectWriteModel current){
         current.getSteps().add(new ProjectStep());
+        return "projects";
+    }
+    @PostMapping(params="deleteStep")
+    String deleteProjectStep(@ModelAttribute("project") ProjectWriteModel current, @RequestParam("deleteStep") int id){
+        current.getSteps().remove(id);
         return "projects";
     }
     @PostMapping
@@ -65,6 +71,8 @@ public class ProjectController {
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline
     ){
         try {
+            if(deadline==null)
+                throw new IllegalStateException();
             service.createGroup(deadline,id);
             model.addAttribute("message","Group added!");
         } catch (IllegalStateException | IllegalArgumentException e){

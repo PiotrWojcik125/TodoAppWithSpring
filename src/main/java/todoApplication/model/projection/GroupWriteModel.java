@@ -6,16 +6,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupWriteModel {
     @NotBlank(message = "Task group's description must not be empty")
     private String description;
     @Valid
-    private List<GroupTaskWriteModel> tasks=new ArrayList<>();
+    private List<TaskWriteModel> tasks=new ArrayList<>();
     public GroupWriteModel(){
-        tasks.add(new GroupTaskWriteModel());
+        tasks.add(new TaskWriteModel());
     }
 
     public String getDescription() {
@@ -26,10 +25,10 @@ public class GroupWriteModel {
         this.description = description;
     }
 
-    public List<GroupTaskWriteModel> getTasks() {
+    public List<TaskWriteModel> getTasks() {
         return tasks;
     }
-    public void setTasks(final List<GroupTaskWriteModel> tasks) {
+    public void setTasks(final List<TaskWriteModel> tasks) {
         this.tasks = tasks;
     }
     public TaskGroup toGroup(final Project project){

@@ -15,7 +15,7 @@ public class GroupReadModel {
      * Deadline from the latest task in group
      */
     private LocalDateTime deadline;
-    private Set<GroupTaskReadModel> tasks;
+    private Set<TaskReadModel> tasks;
 
     public GroupReadModel(TaskGroup source){
         id=source.getId();
@@ -27,7 +27,7 @@ public class GroupReadModel {
                 .ifPresent(date->deadline=date);
         tasks=source.getTasks()
                 .stream()
-                .map(GroupTaskReadModel::new)
+                .map(TaskReadModel::new)
                 .collect(Collectors.toSet());
     }
     public int getId() {
@@ -54,11 +54,11 @@ public class GroupReadModel {
         this.deadline = deadline;
     }
 
-    public Set<GroupTaskReadModel> getTasks() {
+    public Set<TaskReadModel> getTasks() {
         return tasks;
     }
 
-    public void setTasks(final Set<GroupTaskReadModel> tasks) {
+    public void setTasks(final Set<TaskReadModel> tasks) {
         this.tasks = tasks;
     }
 }

@@ -2,11 +2,11 @@ package todoApplication.model.projection;
 
 import todoApplication.model.Task;
 
-public class GroupTaskReadModel {
+public class TaskReadModel {
     private String description;
     private boolean done;
 
-    GroupTaskReadModel(Task source){
+    TaskReadModel(Task source){
         description=source.getDescription();
         done=source.isDone();
     }
