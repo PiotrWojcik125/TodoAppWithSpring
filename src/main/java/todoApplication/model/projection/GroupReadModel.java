@@ -1,6 +1,5 @@
 package todoApplication.model.projection;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import todoApplication.model.TaskGroup;
 import todoApplication.model.Task;
 

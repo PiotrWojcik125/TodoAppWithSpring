@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TaskGroupService {
-    private TaskGroupRepository repository;
-    private TaskRepository taskRepository;
+    private final TaskGroupRepository repository;
+    private final TaskRepository taskRepository;
 
     TaskGroupService(final TaskGroupRepository repository,final TaskRepository taskRepository){
         this.repository=repository;
