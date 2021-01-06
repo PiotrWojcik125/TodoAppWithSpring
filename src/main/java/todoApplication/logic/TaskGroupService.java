@@ -27,7 +27,7 @@ public class TaskGroupService {
                 .map(GroupReadModel::new)
                 .collect(Collectors.toList());
     }
-    public void toogleGroup(int groupId){
+    public void closeGroup(int groupId){
         if(taskRepository.existsByDoneIsFalseAndGroup_Id(groupId)){
             throw new IllegalStateException("Group has undone tasks. Done all the tasks first");
         }
@@ -38,6 +38,8 @@ public class TaskGroupService {
     }
     public Task addTaskToGroup(Task toAdd,Integer id){
         TaskGroup group =repository.findById(id).orElseThrow(()->new IllegalArgumentException(("TaskGroup with given id not found")));
+        if(group.isDone())
+            throw new IllegalStateException("Cannot add task to closed group");
         return taskRepository.save(new Task(toAdd.getDescription(), toAdd.getDeadline(),group));
     }
 

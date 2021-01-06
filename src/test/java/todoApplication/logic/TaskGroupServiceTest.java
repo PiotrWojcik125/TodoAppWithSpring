@@ -24,7 +24,7 @@ class TaskGroupServiceTest {
          // system under test
          TaskGroupService SUT = new TaskGroupService(null,mockTaskRepository);
          // when
-         Throwable exception= catchThrowable(()-> SUT.toogleGroup(1));
+         Throwable exception= catchThrowable(()-> SUT.closeGroup(1));
          //  then
          assertThat(exception)
                  .isInstanceOf(IllegalStateException.class)
@@ -42,7 +42,7 @@ class TaskGroupServiceTest {
         // system under test
         TaskGroupService SUT = new TaskGroupService(mockTaskGroupRepository,mockTaskRepository);
         // when
-        Throwable exception= catchThrowable(()-> SUT.toogleGroup(1));
+        Throwable exception= catchThrowable(()-> SUT.closeGroup(1));
         //  then
         assertThat(exception)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -62,7 +62,7 @@ class TaskGroupServiceTest {
         // system under test
         TaskGroupService SUT = new TaskGroupService(mockTaskGroupRepository,mockTaskRepository);
         // when
-        SUT.toogleGroup(1);
+        SUT.closeGroup(1);
         //  then
         assertThat(true).isEqualTo(mockTaskGroup.isDone());
     }

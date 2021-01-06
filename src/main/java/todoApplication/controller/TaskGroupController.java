@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import todoApplication.model.Task;
-import todoApplication.model.TaskGroup;
 import todoApplication.model.TaskGroupRepository;
 import todoApplication.model.projection.GroupReadModel;
 import todoApplication.model.projection.TaskWriteModel;
@@ -77,7 +76,7 @@ public class TaskGroupController {
     @Transactional
     @PatchMapping("/{id}")
     ResponseEntity<?> toogleGroup(@PathVariable int id){
-        service.toogleGroup(id);
+        service.closeGroup(id);
         return ResponseEntity.noContent().build();
     }
     @ResponseBody
@@ -88,9 +87,13 @@ public class TaskGroupController {
     }
     @ResponseBody
     @PostMapping("/{id}")
-    ResponseEntity<Task> addTaskToGroup(@RequestBody @Valid Task toCreate,@PathVariable Integer id){
-        Task createdTask = service.addTaskToGroup(toCreate, id);
-        return ResponseEntity.created(URI.create("/" + createdTask.getId())).body(createdTask);
+    ResponseEntity<Task> addTaskToGroup(@RequestBody @Valid Task toCreate,@PathVariable Integer id, Model model){
+        try {
+            Task createdTask = service.addTaskToGroup(toCreate, id);
+            return ResponseEntity.created(URI.create("/" + createdTask.getId())).body(createdTask);
+        }catch (IllegalStateException e){
+            return ResponseEntity.badRequest().build();
+        }
     }
     @PostMapping(value = "/{id}", params = "deleteGroup")
     String deleteGroup(@PathVariable int id,Model model)
@@ -103,5 +106,20 @@ public class TaskGroupController {
     @ModelAttribute("groups")
     public List<GroupReadModel> getGroups() {
         return service.readAll();
+    }
+    @PostMapping(value = "/{id}", params = "closeGroup")
+    String closeGroup (@PathVariable int id, Model model){
+        try {
+            service.closeGroup(id);
+        } catch (IllegalStateException | IllegalArgumentException e){
+            if (e instanceof IllegalStateException) {
+                model.addAttribute("message", "Group has undone tasks. Done all the tasks first");
+            } else {
+                model.addAttribute("message", "TaskGroup with given id not found");
+            }
+        }
+        model.addAttribute("group",new GroupWriteModel());
+        model.addAttribute("groups",getGroups());
+        return "groups";
     }
 }

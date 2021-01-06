@@ -32,28 +32,33 @@
     <!--/*@thymesVar id="message" type="java.lang.String"*/-->
     <h1 th:if="${message !=null}" th:text="${message}"></h1>
     <!--/*@thymesVar id="groups" type="java.util.List<todoApplication.model.projection.GroupReadModel>"*/-->
-    <dl th:each="group: ${groups} " class="Bd P(10)">
+    <dl th:each="groupRead: ${groups} " class="Bd P(10)">
         <dt>
             <label>
-                <input type="checkbox"/>
-                <span th:text="${group.description}"></span>
-                <small th:text="|(${group.deadline})|"></small>
+                <input type="checkbox" th:checked="${groupRead.done}" disabled="disabled"/>
+                <span th:text="${groupRead.description}"></span>
+                <small th:text="|(${groupRead.deadline})|"></small>
             </label>
             <hr class="M(0)"/>
         </dt>
         <dd>
-            <a th:href="@{/tasks.html(group=${group.id})}">
+            <a th:href="@{/tasks.html(group=${groupRead.id})}">
                 <ul class="P(0)">
-                    <li th:each="task :${group.tasks}">
+                    <li th:each="task :${groupRead.tasks}">
                         <span th:unless="${task.isDone()}" th:text="${task.description}"></span>
                         <del th:if="${task.isDone()}" th:text="${task.description}"></del>
                     </li>
                 </ul>
             </a>
         </dd>
-        <form action="#" th:action="@{/groups/{groupId}(groupId=${group.id})}" method="post">
+        <div>
+        <form action="#" th:action="@{/groups/{groupId}(groupId=${groupRead.id})}" method="post">
             <button type="submit" name="deleteGroup">Delete</button>
         </form>
+        <form action="#" th:action="@{/groups/{groupId}(groupId=${groupRead.id})}" method="post">
+            <button type="submit" name="closeGroup">Close</button>
+        </form>
+        </div>
     </dl>
     <fieldset>
         <legend>New group </legend>

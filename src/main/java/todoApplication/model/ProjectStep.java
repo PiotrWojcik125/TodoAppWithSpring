@@ -1,7 +1,9 @@
 package todoApplication.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Negative;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "project_steps")
@@ -11,6 +13,8 @@ public class ProjectStep {
     private Integer id;
     @NotBlank(message = "Project step's must not be empty")
     private String description;
+    @NotNull(message = "Days to deadline must not be empty")
+    @Negative(message = "Days to deadline must be negative integer")
     private Integer daysToDeadline;
     @ManyToOne
     @JoinColumn(name = "project_id")

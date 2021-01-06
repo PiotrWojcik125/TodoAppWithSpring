@@ -16,7 +16,7 @@ public class GroupReadModel {
      */
     private LocalDateTime deadline;
     private Set<TaskReadModel> tasks;
-
+    private boolean done;
     public GroupReadModel(TaskGroup source){
         id=source.getId();
         description= source.getDescription();
@@ -29,11 +29,18 @@ public class GroupReadModel {
                 .stream()
                 .map(TaskReadModel::new)
                 .collect(Collectors.toSet());
+        done=source.isDone();
     }
     public int getId() {
         return id;
     }
 
+    public boolean isDone(){
+        return done;
+    }
+    public void setDone(boolean done){
+        this.done=done;
+    }
     void setId(final int id) {
         this.id = id;
     }
