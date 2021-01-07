@@ -28,7 +28,6 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 @RequestMapping("/groups")
 public class TaskGroupController {
-    private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
     private final TaskGroupService service;
     private final TaskRepository repository;
     private final TaskGroupRepository groupRepository;
@@ -73,13 +72,6 @@ public class TaskGroupController {
         return ResponseEntity.ok(repository.findAllByGroup_Id(id));
     }
     @ResponseBody
-    @Transactional
-    @PatchMapping("/{id}")
-    ResponseEntity<?> toogleGroup(@PathVariable int id){
-        service.closeGroup(id);
-        return ResponseEntity.noContent().build();
-    }
-    @ResponseBody
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel toCreate){
         GroupReadModel result = service.createGroup(toCreate);
@@ -87,7 +79,7 @@ public class TaskGroupController {
     }
     @ResponseBody
     @PostMapping("/{id}")
-    ResponseEntity<Task> addTaskToGroup(@RequestBody @Valid Task toCreate,@PathVariable Integer id, Model model){
+    ResponseEntity<Task> addTaskToGroup(@RequestBody @Valid Task toCreate,@PathVariable Integer id){
         try {
             Task createdTask = service.addTaskToGroup(toCreate, id);
             return ResponseEntity.created(URI.create("/" + createdTask.getId())).body(createdTask);
@@ -103,23 +95,26 @@ public class TaskGroupController {
         model.addAttribute("groups",getGroups());
         return "groups";
     }
-    @ModelAttribute("groups")
-    public List<GroupReadModel> getGroups() {
-        return service.readAll();
-    }
     @PostMapping(value = "/{id}", params = "closeGroup")
     String closeGroup (@PathVariable int id, Model model){
         try {
             service.closeGroup(id);
-        } catch (IllegalStateException | IllegalArgumentException e){
+        } catch (IllegalStateException | IllegalArgumentException | IllegalCallerException e){
             if (e instanceof IllegalStateException) {
-                model.addAttribute("message", "Group has undone tasks. Done all the tasks first");
-            } else {
-                model.addAttribute("message", "TaskGroup with given id not found");
+                model.addAttribute("errorMessage", "Group has undone tasks. Done all the tasks first");
+            }
+            else if (e instanceof IllegalArgumentException) {
+                model.addAttribute("errorMessage", "TaskGroup with given id not found");
+            }else {
+                model.addAttribute("errorMessage", "Group is already closed");
             }
         }
         model.addAttribute("group",new GroupWriteModel());
         model.addAttribute("groups",getGroups());
         return "groups";
+    }
+    @ModelAttribute("groups")
+    public List<GroupReadModel> getGroups() {
+        return service.readAll();
     }
 }

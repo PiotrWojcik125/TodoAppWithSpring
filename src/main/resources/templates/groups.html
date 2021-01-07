@@ -30,8 +30,28 @@
 <body>
 <main>
     <!--/*@thymesVar id="message" type="java.lang.String"*/-->
-    <h1 th:if="${message !=null}" th:text="${message}"></h1>
+    <h2 th:if="${message !=null}" th:text="${message}"></h2>
+    <!--/*@thymesVar id="errorMessage" type="java.lang.String"*/-->
+    <h2 style="color: red" th:if="${errorMessage !=null}" th:text="${errorMessage}"></h2>
     <!--/*@thymesVar id="groups" type="java.util.List<todoApplication.model.projection.GroupReadModel>"*/-->
+    <aside>
+        <fieldset style="text-align: center">
+            <legend>Menu</legend>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/projects"><h3>Projects</h3></a>
+                </li>
+                <li>
+                    <a href="/tasks.html"><h3>Tasks</h3></a>
+                </li>
+                <li>
+                    <a href="/today.html"><h3>Tasks for today</h3></a>
+                </li>
+            </ul>
+        </nav>
+        </fieldset>
+    </aside>
     <dl th:each="groupRead: ${groups} " class="Bd P(10)">
         <dt>
             <label>
@@ -51,13 +71,17 @@
                 </ul>
             </a>
         </dd>
-        <div>
-        <form action="#" th:action="@{/groups/{groupId}(groupId=${groupRead.id})}" method="post">
-            <button type="submit" name="deleteGroup">Delete</button>
-        </form>
-        <form action="#" th:action="@{/groups/{groupId}(groupId=${groupRead.id})}" method="post">
-            <button type="submit" name="closeGroup">Close</button>
-        </form>
+        <div style="text-align: center">
+            <div style="display: inline-block">
+                <form action="#" th:action="@{/groups/{groupId}(groupId=${groupRead.id})}" method="post">
+                    <button type="submit" name="deleteGroup">Delete</button>
+                </form>
+            </div>
+            <div style="display: inline-block">
+                <form action="#" th:action="@{/groups/{groupId}(groupId=${groupRead.id})}" method="post">
+                    <button type="submit" name="closeGroup">Close</button>
+                </form>
+            </div>
         </div>
     </dl>
     <fieldset>

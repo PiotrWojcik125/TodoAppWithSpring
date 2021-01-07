@@ -10,8 +10,28 @@
 </head>
 <body>
 <main>
-    <!--/*@thymesVar id="message" type="java.lang.String"*/-->
-    <h1 th:if="${message !=null}" th:text="${message}"></h1>
+    <section>
+        <aside>
+            <fieldset style="text-align: center">
+                <legend>Menu</legend>
+                <nav style="text-align: center">
+                    <ul>
+                        <li>
+                             <a href="/projects"><h3>Projects</h3></a>
+                        </li>
+                        <li>
+                            <a href="/groups"><h3>Task groups</h3></a>
+                        </li>
+                        <li>
+                            <a href="/today.html"><h3>Tasks for today</h3></a>
+                        </li>
+                     </ul>
+                </nav>
+            </fieldset>
+        </aside>
+        <article></article>
+    </section>
+    <h3 id="errorDescription" style="color: red"></h3>
     <fieldset>
         <form>
             <label>Description
@@ -26,7 +46,7 @@
 </main>
 <script>
     (async function() {
-        const main = document.querySelector('main');
+        const main = document.querySelector('article');
         var tokenName;
         var token;
         var metas = document.getElementsByTagName('meta');
@@ -41,6 +61,7 @@
         if (response.ok) {
             const tasks = await response.json();
             const list = document.createElement('ul');
+            list.id="tasks";
             tasks.forEach(task => list.appendChild(createTask(task)));
             main.prepend(list);
         }
@@ -72,8 +93,12 @@
             });
             if (resp.ok) {
                 const taskFromServer = await resp.json();
-                document.querySelector('ul').appendChild(createTask(taskFromServer));
+                document.querySelector("[id='tasks']").appendChild(createTask(taskFromServer));
                 form.reset();
+            }
+            else {
+                document.getElementById("errorDescription").innerHTML="Task description must not be empty";
+
             }
         });
 
@@ -94,8 +119,8 @@
                 }
             });
             result.querySelector('button').addEventListener('click', async () => {
-                const response = await fetch(`/tasks/${id}`, { method: 'DELETE',headers:{[token]:tokenName }});
-                    location.reload();
+                 await fetch(`/tasks/${id}`, { method: 'DELETE',headers:{[token]:tokenName }});
+                 location.reload();
             })
             return result;
         }

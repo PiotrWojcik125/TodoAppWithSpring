@@ -33,6 +33,8 @@ public class TaskGroupService {
         }
         TaskGroup result = repository.findById(groupId)
                 .orElseThrow(()->new IllegalArgumentException(("TaskGroup with given id not found")));
+        if(result.isDone())
+            throw new IllegalCallerException("Groups is already closed");
         result.setDone(!result.isDone());
         repository.save(result);
     }
