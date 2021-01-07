@@ -1,4 +1,4 @@
-This project was made (its not final version yet) during course "Java - Spring Framework" for full information go to:
+This project was made during course "Java - Spring Framework" for full information go to:
 https://full-stack.engineering/
 It also contains my additional features.
 
@@ -11,6 +11,8 @@ When creating project, task's deadline value is passed as amount of days before 
 You can also create group of tasks without creating project. Group's deadline will be set as the latest deadline from tasks.
 "Tasks for today" shows undone tasks with deadline expiring today, deadline already expired and deadline is null.
 Deleting group of tasks will delete all tasks assigned to given group. Deleting project will not delete assigned groups of tasks.
+You can close group only when all tasks are done.
+
 This application is Keycloak secured.There are 2 roles available: "admin" and "user".
 Remember to change database location in application properties before running application or change profile to "prod" so database will be kept in memory.
 
