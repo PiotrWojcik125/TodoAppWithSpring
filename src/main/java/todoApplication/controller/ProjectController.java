@@ -72,11 +72,19 @@ public class ProjectController {
     ){
         try {
             if(deadline==null)
-                throw new IllegalStateException();
+                throw new IllegalCallerException();
             service.createGroup(deadline,id);
             model.addAttribute("message","Group added!");
-        } catch (IllegalStateException | IllegalArgumentException e){
-            model.addAttribute("message","Error occurred, group was not created!");
+        } catch (IllegalStateException | IllegalArgumentException | IllegalCallerException e){
+            if(e instanceof IllegalArgumentException)
+            {
+                model.addAttribute("errorMessage","Project with given id not found");
+            }
+            else if (e instanceof IllegalStateException) {
+                model.addAttribute("errorMessage", "Only one undone group from project is allowed");
+            }
+            else
+                model.addAttribute("errorMessage", "Deadline must not me empty");
         }
         return "projects";
     }
